@@ -11,6 +11,11 @@ export interface Props {
   fetchPictures: Function,
   pictures: Array<Object>,
   isLoading: boolean,
+  errorMessage: string,
+  hasMore: boolean,
+  page: number,
+  onLoadNext: Function,
+  onRefresh: Function,
 }
 
 export interface State {}
@@ -24,20 +29,21 @@ class HomeContainer extends React.Component<Props, State> {
     super(props)
     StatusBar.setBarStyle('light-content')
     Platform.OS === 'android' && StatusBar.setBackgroundColor('#000')
-    this.onRefresh = this.onRefresh.bind(this)
-    this.onLoadNext = this.onLoadNext.bind(this)
   }
 
   componentDidMount () {
     this.onRefresh()
   }
 
-  onRefresh (): void {
+  onRefresh = (): void => {
     this.props.fetchPictures(1)
   }
 
-  onLoadNext (): void {
-    // TODO: implement me
+  onLoadNext = (): void => {
+    const {isLoading, hasMore, page} = this.props;
+    if (!isLoading && hasMore) {
+      this.props.fetchPictures(page + 1)
+    }
   }
 
   render () {
@@ -57,6 +63,8 @@ const mapStateToProps = state => ({
   pictures: state.homeReducer.pictures,
   page: state.homeReducer.page,
   isLoading: state.homeReducer.isLoading,
+  hasMore: state.homeReducer.hasMore,
+  errorMessage: state.homeReducer.errorMessage,
 })
 
 export default connect(mapStateToProps, bindAction)(HomeContainer)

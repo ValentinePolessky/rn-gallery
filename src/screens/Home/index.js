@@ -5,7 +5,7 @@ import {
   ActivityIndicator,
   Dimensions,
   StyleSheet,
-  View,
+  View, Text,
 } from 'react-native'
 
 import ListItem from './components/ListItem'
@@ -21,11 +21,9 @@ class HomeView extends React.PureComponent<Props> {
   constructor (props) {
     super(props)
     this._prepareStyles() // create styles once to avoid object literals and use RN style optimization
-    this._renderPicture = this._renderPicture.bind(this)
-    this._openPicture = this._openPicture.bind(this)
   }
 
-  _prepareStyles (): void {
+  _prepareStyles = (): void => {
     const { height, width } = Dimensions.get('window')
     const realWidth = height > width ? width : height
     const portraitImageSize = realWidth / 2 - 10
@@ -35,14 +33,14 @@ class HomeView extends React.PureComponent<Props> {
     })
   }
 
-  _openPicture (imageId: number): void {
+  _openPicture = (imageId: number): void => {
     const { pictures, navigation } = this.props
     navigation.navigate('DetailView', {
       pictureDetails: pictures.find(pic => pic.id === imageId)
     })
   }
 
-  _renderPicture (picture) {
+  _renderPicture = (picture) => {
     const imageURL = picture.item.cropped_picture
     const imageId = picture.item.id
     return <ListItem
@@ -53,22 +51,29 @@ class HomeView extends React.PureComponent<Props> {
     />
   }
 
-  // TODO: it would be great to see here some loader and non-flickering layout
   render () {
-    const { isLoading, page, pictures, onLoadNext, onRefresh } = this.props
+    const { isLoading, page, pictures, onLoadNext, onRefresh, errorMessage } = this.props
+
     return <View style={styles.page}>
-      <FlatList
-        removeClippedSubviews
-        refreshing={isLoading}
-        initialNumToRender={20}
-        data={pictures}
-        onRefresh={onRefresh}
-        numColumns={2}
-        renderItem={this._renderPicture}
-        keyExtractor={(item) => keyExtractor(item, page)}
-        onEndReached={onLoadNext}
-        onEndThreshold={2}
-      />
+      {errorMessage ? (
+        <Text style={{color: 'white'}}>
+          {errorMessage}
+        </Text>
+      ) : (
+        <FlatList
+          removeClippedSubviews={true}
+          refreshing={isLoading}
+          initialNumToRender={20}
+          data={pictures}
+          onRefresh={onRefresh}
+          numColumns={2}
+          renderItem={this._renderPicture}
+          keyExtractor={(item) => keyExtractor(item, page)}
+          onEndReached={onLoadNext}
+          onEndThreshold={2}
+        />
+      )}
+
     </View>
   }
 }

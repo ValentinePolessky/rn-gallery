@@ -11,20 +11,34 @@ export function listIsLoading (): ActionWithoutPayload {
   }
 }
 
-export function fetchListSuccess (pictures: Array<Object>, page: number): ActionWithPayload {
+export function fetchListSuccess (pictures: Array<Object>, page: number, hasMore: boolean): ActionWithPayload {
   return {
-    // TODO: implement me
+    type: PICTURES_FETCH_SUCCESS,
+    payload: {
+      pictures,
+      page,
+      hasMore
+    }
   }
 }
 
 export function fetchListFailed (errorMessage: string): ActionWithPayload {
   return {
-    // TODO: implement me
+    type: FETCH_FAILED,
+    payload: {
+      errorMessage
+    }
   }
 }
 
 export function fetchPictures (page: number = 1) {
   return async dispatch => {
-    // TODO: implement me
+    dispatch(listIsLoading);
+    const resp = await getPictures(page)
+    if (resp && resp.status == 200) {
+      dispatch(fetchListSuccess(resp.data.pictures, resp.data.page, resp.data.hasMore));
+    } else {
+      dispatch(fetchListFailed(resp && resp.message || 'Something went wrong'))
+    }
   }
 }

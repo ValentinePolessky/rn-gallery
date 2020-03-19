@@ -1,5 +1,4 @@
-import { Dimensions, StyleSheet } from 'react-native'
-const { width } = Dimensions.get('window')
+import { StyleSheet } from 'react-native'
 
 const styles: any = StyleSheet.create({
   container: {
@@ -11,11 +10,6 @@ const styles: any = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  imageStyle: {
-    flex: 1,
-    width: width * 0.9,
-    height: width * 0.9,
   },
   backButton: {
     position: 'absolute',
@@ -31,6 +25,22 @@ const styles: any = StyleSheet.create({
     width: 120,
     right: 10,
     flexDirection: 'row',
+  },
+  authorView: {
+    position: 'absolute',
+    bottom: 10,
+    width: 120,
+    left: 10,
+    flexDirection: 'column',
+  },
+  authorText: {
+    color: 'white',
+    fontSize: 24,
+    fontWeight: 'bold'
+  },
+  cameraText: {
+    color: 'white',
+    fontSize: 16,
   },
   detailViewImage: {
     width: 50,

@@ -3,6 +3,7 @@ import {
   TouchableOpacity,
   Image,
   View,
+  Text,
 } from 'react-native'
 import styles from '../styles'
 import imageFiltersImage from './images/ImageFilters.png'
@@ -20,6 +21,15 @@ class DetailsFooter extends React.PureComponent<Props> {
     if (!pictureDetails) return null
     const imageId = pictureDetails.id
     return (
+    <React.Fragment>
+      <View style={styles.authorView}>
+      <Text style={styles.authorText}>
+        {pictureDetails.author}
+      </Text>
+      <Text style={styles.cameraText}>
+        {pictureDetails.camera}
+      </Text>
+      </View>
       <View style={styles.detailView}>
         <TouchableOpacity
           style={{marginRight: 10}}
@@ -38,6 +48,7 @@ class DetailsFooter extends React.PureComponent<Props> {
             source={shareImage} />
         </TouchableOpacity>
       </View>
+    </React.Fragment>
     )
   }
 }
