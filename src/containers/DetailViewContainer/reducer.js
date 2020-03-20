@@ -24,7 +24,7 @@ export default function (state: any = initialState, action: Object) {
       return {
         ...state,
         isLoading: false,
-        errorMessage: ''
+        errorMessage: action.payload.errorMessage
       }
     default:
       return state;
